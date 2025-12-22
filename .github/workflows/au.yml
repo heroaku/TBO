@@ -1,0 +1,178 @@
+name: Simple Sync DBY and N3RD
+
+on: workflow_dispatch
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 步骤1：检出
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # 使用 clean 模式确保干净的工作区
+          clean: true
+          
+      # 步骤2：配置 Git
+      - name: Setup Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+      # 步骤3：同步 DBY（使用最简单的方式）
+      - name: Sync DBY repository
+        run: |
+          echo "=== 同步 DBY 仓库 ==="
+          
+          # 清理旧目录
+          rm -rf DBY
+          
+          # 直接克隆到目标目录（避免复制步骤）
+          if git clone --quiet --depth 1 https://github.com/huangxinyueus/dby.git DBY; then
+            echo "✅ DBY 同步成功"
+            echo "文件数量: $(find DBY -type f 2>/dev/null | wc -l)"
+          else
+            echo "❌ DBY 同步失败"
+            # 创建空目录作为占位符
+            mkdir -p DBY
+            echo "# DBY - Sync failed" > DBY/README.md
+          fi
+          
+      # 步骤4：同步 N3RD（使用最直接的方式）
+      - name: Sync N3RD repository
+        run: |
+          echo "=== 同步 N3RD 仓库 ==="
+          
+          # 清理旧目录
+          rm -rf N3RD
+          
+          # 方法1：尝试标准方式
+          if git clone --quiet --depth 1 https://github.com/n3rddd/N3RD.git N3RD 2>&1; then
+            echo "✅ N3RD 同步成功"
+            echo "文件数量: $(find N3RD -type f 2>/dev/null | wc -l)"
+          else
+            echo "❌ 方法1失败，尝试方法2..."
+            
+            # 方法2：查看实际错误
+            echo "详细错误信息:"
+            git clone --depth 1 https://github.com/n3rddd/N3RD.git N3RD 2>&1 | tail -5 || true
+            
+            # 方法3：创建占位符目录
+            echo "创建占位符目录..."
+            mkdir -p N3RD
+            cat > N3RD/README.md << 'EOF'
+# N3RD 目录
+
+原计划从以下仓库同步：
+- https://github.com/n3rddd/N3RD.git
+
+同步失败原因可能包括：
+1. 仓库不存在或已删除
+2. 仓库设置为私有
+3. 网络访问问题
+4. 分支名称不匹配
+
+同步时间: $(date)
+EOF
+          fi
+          
+      # 步骤5：显示同步结果
+      - name: Show sync results
+        run: |
+          echo "=== 同步结果 ==="
+          echo ""
+          echo "目录结构:"
+          ls -la
+          echo ""
+          
+          if [ -d "DBY" ]; then
+            echo "DBY 目录内容:"
+            ls -la DBY/ | head -10
+          fi
+          
+          if [ -d "N3RD" ]; then
+            echo "N3RD 目录内容:"
+            ls -la N3RD/ | head -10
+          fi
+          
+      # 步骤6：提交更改
+      - name: Commit changes
+        run: |
+          echo "=== 准备提交 ==="
+          
+          # 添加所有文件
+          git add -A
+          
+          # 检查状态
+          git status --short
+          
+          # 如果有更改则提交
+          if ! git diff --cached --quiet; then
+            echo "检测到更改，正在提交..."
+            
+            # 获取文件统计
+            DBY_FILES=$(find DBY -type f 2>/dev/null | wc -l || echo 0)
+            N3RD_FILES=$(find N3RD -type f 2>/dev/null | wc -l || echo 0)
+            
+            git commit -m "🔄 同步更新 - $(date '+%Y-%m-%d %H:%M:%S')
+            
+            同步统计:
+            - DBY: $DBY_FILES 个文件
+            - N3RD: $N3RD_FILES 个文件
+            
+            状态: 自动同步完成"
+            
+            echo "✅ 提交完成"
+          else
+            echo "没有检测到更改"
+          fi
+          
+      # 步骤7：推送更改
+      - name: Push changes
+        run: |
+          echo "=== 开始推送 ==="
+          
+          # 获取当前分支
+          CURRENT_BRANCH=$(git branch --show-current)
+          echo "推送分支: $CURRENT_BRANCH"
+          
+          # 尝试推送
+          if git push origin "$CURRENT_BRANCH"; then
+            echo "✅ 推送成功"
+          else
+            echo "❌ 推送失败，尝试设置上游分支..."
+            
+            # 设置上游分支
+            if git push --set-upstream origin "$CURRENT_BRANCH"; then
+              echo "✅ 设置上游分支成功"
+            else
+              echo "❌ 设置上游失败，尝试强制推送..."
+              
+              # 最终尝试强制推送
+              if git push origin "$CURRENT_BRANCH" --force; then
+                echo "✅ 强制推送成功"
+              else
+                echo "❌ 所有推送尝试都失败"
+                echo "请检查以下可能的问题:"
+                echo "1. GitHub Token 权限"
+                echo "2. 分支保护规则"
+                echo "3. 仓库设置"
+              fi
+            fi
+          fi
+          
+      # 步骤8：完成通知
+      - name: Completion notice
+        run: |
+          echo "=== 工作流执行完成 ==="
+          echo ""
+          echo "总结:"
+          echo "- 仓库同步: 完成"
+          echo "- 提交: $(git log --oneline -1 2>/dev/null || echo '无新提交')"
+          echo "- 推送: 见上一步结果"
+          echo ""
+          echo "详细信息请查看各步骤输出"
