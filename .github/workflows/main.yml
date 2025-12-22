@@ -1,187 +1,207 @@
-name: Sync DBY and N3RD Repositories
+name: Sync DBY and N3RD Repositories (For Old Repo)
 
 on: 
   workflow_dispatch:        # 只支持手动运行 
-
-concurrency: 
-  group: sync_repositories_lock 
-  cancel-in-progress: true   # 防止多个任务同时运行 
 
 jobs: 
   sync_repositories: 
     runs-on: ubuntu-latest 
 
     steps: 
-      # ✅ 步骤1：检出代码
+      # ✅ 步骤1：检出代码（使用浅克隆避免历史问题）
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-          token: ${{ secrets.PAT_TOKEN }}  # 使用个人访问令牌
+          fetch-depth: 1  # 只获取最新提交
 
       - name: Set up Git config 
         run: | 
           git config user.name "github-actions[bot]" 
-          git config user.email "github-actions[bot]@users.noreply.github.com" 
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      # ✅ 步骤2：设置认证（用于克隆私有仓库）
-      - name: Setup authentication
+      # ✅ 步骤2：智能检测默认分支（专门处理老仓库）
+      - name: Detect and setup default branch
         run: |
-          # 配置 Git 使用当前 token 进行认证
-          echo "配置 Git 认证..."
-          
-          # 方法1：为特定仓库配置 token
-          git config --global url."https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com".insteadOf "https://github.com"
-          
-          # 方法2：或使用环境变量
-          echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
-          echo "PAT_TOKEN=${{ secrets.PAT_TOKEN }}" >> $GITHUB_ENV
-
-      # ✅ 步骤3：动态分支处理
-      - name: Setup default branch 
-        run: | 
           set -e
-          echo "配置分支信息..."
+          echo "=== 检测老仓库的分支结构 ==="
           
-          # 使用当前工作流的 token 重新配置 remote
-          git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git
-          
-          # 获取远程信息
+          # 获取所有远程分支
+          echo "获取远程分支列表..."
           git fetch origin
           
-          # 检测默认分支
-          DEFAULT_BRANCH="main"
-          if git show-ref --verify --quiet refs/remotes/origin/main 2>/dev/null; then
-            DEFAULT_BRANCH="main"
-          elif git show-ref --verify --quiet refs/remotes/origin/master 2>/dev/null; then
-            DEFAULT_BRANCH="master"
-          else
-            echo "没有检测到远程分支，将创建 main 分支"
-            # 创建初始文件
-            echo "# TBO Repository" > README.md
-            git add README.md
-            git commit -m "Initial commit" || true
-            git branch -M main
+          # 列出所有远程分支
+          echo "远程分支列表:"
+          git branch -r
+          
+          # 尝试多种方式获取默认分支
+          echo "尝试检测默认分支..."
+          
+          # 方法1：从 remote show 获取 HEAD branch
+          if DEFAULT_BRANCH=$(git remote show origin | grep 'HEAD branch' | awk '{print $NF}'); then
+            echo "方法1检测到默认分支: $DEFAULT_BANCH"
           fi
           
-          echo "使用分支: $DEFAULT_BRANCH"
-          git checkout -B $DEFAULT_BRANCH
-          echo "DEFAULT_BRANCH=$DEFAULT_BRANCH" >> $GITHUB_ENV
-
-      # ✅ 步骤4：同步仓库（使用认证）
-      - name: Fetch repositories 
-        env:
-          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
-        run: | 
-          echo "==== 开始同步仓库 ====" 
+          # 方法2：如果没有检测到，尝试常见的分支名
+          if [ -z "$DEFAULT_BRANCH" ]; then
+            echo "尝试常见分支名..."
+            for branch in master main; do
+              if git show-ref --verify --quiet refs/remotes/origin/$branch 2>/dev/null; then
+                DEFAULT_BRANCH=$branch
+                echo "找到分支: $DEFAULT_BRANCH"
+                break
+              fi
+            done
+          fi
           
-          # 创建目标文件夹
+          # 方法3：如果还没有，获取第一个远程分支
+          if [ -z "$DEFAULT_BRANCH" ]; then
+            echo "使用第一个远程分支..."
+            DEFAULT_BRANCH=$(git branch -r | grep -v '\->' | head -n 1 | sed 's|origin/||' | xargs)
+            echo "使用分支: $DEFAULT_BRANCH"
+          fi
+          
+          # 方法4：如果还是没有，使用 master
+          if [ -z "$DEFAULT_BRANCH" ]; then
+            DEFAULT_BRANCH="master"
+            echo "使用默认分支名: $DEFAULT_BRANCH"
+          fi
+          
+          echo "最终确定的分支: $DEFAULT_BRANCH"
+          
+          # 切换到该分支
+          echo "切换到分支: $DEFAULT_BRANCH"
+          if git show-ref --verify --quiet refs/remotes/origin/$DEFAULT_BRANCH 2>/dev/null; then
+            # 分支存在，检出
+            git checkout $DEFAULT_BRANCH 2>/dev/null || git checkout -b $DEFAULT_BRANCH origin/$DEFAULT_BRANCH
+          else
+            # 分支不存在，创建新分支
+            echo "分支不存在，创建新分支: $DEFAULT_BRANCH"
+            git checkout -b $DEFAULT_BRANCH
+            # 创建初始提交
+            echo "# 自动同步仓库 - 初始提交" > README_SYNC.md
+            git add README_SYNC.md
+            git commit -m "初始提交: 自动同步工作流" || true
+          fi
+          
+          # 保存到环境变量
+          echo "DEFAULT_BRANCH=$DEFAULT_BRANCH" >> $GITHUB_ENV
+          echo "分支设置完成"
+
+      # ✅ 步骤3：同步外部仓库
+      - name: Sync external repositories
+        run: |
+          echo "=== 开始同步外部仓库 ==="
+          
+          # 创建目录
           mkdir -p DBY N3RD
           
-          # 同步 DBY 仓库（使用认证）
-          echo "→ 同步 huangxinyueus/dby 到 DBY 文件夹"
-          
-          # 使用 token 进行克隆
-          if [ -n "$GH_TOKEN" ]; then
-            echo "使用 token 认证克隆仓库..."
-            # 带认证的克隆命令
-            git clone --depth 1 --branch main "https://x-access-token:$GH_TOKEN@github.com/huangxinyueus/dby.git" temp-DBY || {
-              echo "使用 token 克隆失败，尝试公开访问..."
-              git clone --depth 1 --branch main "https://github.com/huangxinyueus/dby.git" temp-DBY || true
-            }
+          echo "1. 同步 DBY 仓库..."
+          # 尝试克隆 DBY 仓库
+          if git clone --depth 1 https://github.com/huangxinyueus/dby.git temp_dby 2>/dev/null; then
+            # 检查是否有 main 分支，没有则使用默认分支
+            cd temp_dby
+            if git branch -a | grep -q "main"; then
+              echo "DBY 使用 main 分支"
+            else
+              # 切换到实际的分支
+              ACTUAL_BRANCH=$(git branch -a | grep -E "^\*" | cut -d' ' -f2)
+              echo "DBY 使用分支: $ACTUAL_BRANCH"
+            fi
+            cd ..
+            cp -r temp_dby/* DBY/ 2>/dev/null || true
+            rm -rf temp_dby
           else
-            echo "使用公开访问克隆仓库..."
-            git clone --depth 1 --branch main "https://github.com/huangxinyueus/dby.git" temp-DBY || true
+            echo "DBY 仓库同步失败"
           fi
           
-          # 复制文件
-          if [ -d "temp-DBY" ]; then
-            cp -r temp-DBY/* DBY/ 2>/dev/null || echo "注意：DBY 文件夹可能为空"
-            rm -rf temp-DBY
+          echo "2. 同步 N3RD 仓库..."
+          # 尝试克隆 N3RD 仓库
+          if git clone --depth 1 https://github.com/n3rddd/N3RD.git temp_n3rd 2>/dev/null; then
+            cp -r temp_n3rd/* N3RD/ 2>/dev/null || true
+            rm -rf temp_n3rd
           else
-            echo "警告：DBY 仓库克隆失败"
+            echo "N3RD 仓库同步失败"
           fi
           
-          # 同步 N3RD 仓库
-          echo "→ 同步 n3rddd/N3RD 到 N3RD 文件夹"
-          
-          if [ -n "$GH_TOKEN" ]; then
-            git clone --depth 1 --branch main "https://x-access-token:$GH_TOKEN@github.com/n3rddd/N3RD.git" temp-N3RD || {
-              echo "使用 token 克隆失败，尝试公开访问..."
-              git clone --depth 1 --branch main "https://github.com/n3rddd/N3RD.git" temp-N3RD || true
-            }
-          else
-            git clone --depth 1 --branch main "https://github.com/n3rddd/N3RD.git" temp-N3RD || true
-          fi
-          
-          # 复制文件
-          if [ -d "temp-N3RD" ]; then
-            cp -r temp-N3RD/* N3RD/ 2>/dev/null || echo "注意：N3RD 文件夹可能为空"
-            rm -rf temp-N3RD
-          else
-            echo "警告：N3RD 仓库克隆失败"
-          fi
+          echo "同步完成"
+          echo "DBY 目录内容:"
+          ls -la DBY/ 2>/dev/null || echo "DBY 目录为空"
+          echo "N3RD 目录内容:"
+          ls -la N3RD/ 2>/dev/null || echo "N3RD 目录为空"
 
-          echo "==== 同步完成 ====" 
-          
-          # 更新文件时间戳
-          if [ -d "DBY" ]; then
-            find DBY -type f -exec touch {} + 2>/dev/null || true
-          fi
-          if [ -d "N3RD" ]; then
-            find N3RD -type f -exec touch {} + 2>/dev/null || true
-          fi
-
-      # ✅ 步骤5：提交更改
-      - name: Commit and push changes
+      # ✅ 步骤4：提交更改
+      - name: Commit changes
         run: |
           set -e
+          echo "=== 准备提交更改 ==="
           
-          # 配置推送认证
-          git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git
+          # 显示状态
+          echo "Git 状态:"
+          git status --short
+          
+          # 添加所有文件
+          git add -A
           
           # 检查是否有更改
-          git status
-          
-          # 添加所有更改
-          git add -A
-          
-          # 提交更改
           if git diff --cached --quiet; then
-            echo "没有更改需要提交"
+            echo "没有检测到更改"
           else
-            echo "提交更改..."
-            DEFAULT_BRANCH=${DEFAULT_BRANCH:-main}
-            git commit -m "Sync repositories - DBY & N3RD - $(date '+%Y-%m-%d %H:%M:%S')"
+            echo "检测到更改，正在提交..."
+            DEFAULT_BRANCH=${DEFAULT_BRANCH:-$(git branch --show-current)}
+            git commit -m "🔄 同步更新 [$DEFAULT_BRANCH]
             
-            # 推送到远程
-            echo "推送到分支: $DEFAULT_BRANCH"
-            git push origin $DEFAULT_BRANCH || {
-              echo "推送失败，尝试强制推送..."
-              git push origin $DEFAULT_BRANCH --force
+            更新内容:
+            - 同步 DBY 仓库到 DBY/ 目录
+            - 同步 N3RD 仓库到 N3RD/ 目录
+            - 更新时间: $(date '+%Y-%m-%d %H:%M:%S')
+            
+            老仓库适配版本"
+            
+            echo "提交完成"
+          fi
+
+      # ✅ 步骤5：推送更改
+      - name: Push changes
+        run: |
+          set -e
+          echo "=== 开始推送 ==="
+          
+          CURRENT_BRANCH=$(git branch --show-current)
+          echo "当前分支: $CURRENT_BRANCH"
+          
+          # 尝试推送
+          echo "尝试推送到 origin/$CURRENT_BRANCH..."
+          
+          if git push origin $CURRENT_BRANCH 2>&1; then
+            echo "✅ 推送成功"
+          else
+            echo "推送失败，尝试设置上游分支..."
+            # 设置上游分支并推送
+            git push --set-upstream origin $CURRENT_BRANCH 2>&1 || {
+              echo "设置上游失败，尝试强制推送..."
+              git push origin $CURRENT_BRANCH --force
             }
           fi
 
-      # ✅ 步骤6：同步到 master 分支
-      - name: Sync to master branch
+      # ✅ 步骤6：处理 master 分支（可选）
+      - name: Handle master branch
+        if: env.DEFAULT_BRANCH != 'master'
         run: |
-          set -e
-          DEFAULT_BRANCH=${DEFAULT_BRANCH:-main}
+          echo "=== 处理 master 分支 ==="
+          DEFAULT_BRANCH=${DEFAULT_BRANCH:-$(git branch --show-current)}
           
-          echo "同步到 master 分支..."
-          
-          # 创建或切换到 master 分支
-          if git show-ref --verify --quiet refs/heads/master 2>/dev/null || git show-ref --verify --quiet refs/remotes/origin/master 2>/dev/null; then
-            git checkout master
+          # 检查 master 是否存在
+          if git show-ref --verify --quiet refs/heads/master 2>/dev/null || \
+             git show-ref --verify --quiet refs/remotes/origin/master 2>/dev/null; then
+            echo "master 分支已存在，更新内容..."
+            git checkout master 2>/dev/null || git checkout -b master
+            git merge --allow-unrelated-histories -X theirs $DEFAULT_BRANCH --no-commit || true
+            git add -A
+            git commit -m "合并 $DEFAULT_BRANCH 到 master" || true
+            git push origin master --force-with-lease 2>&1 || git push origin master --force 2>&1 || echo "master 推送失败"
+            
+            # 切回原分支
+            git checkout $DEFAULT_BRANCH
           else
-            git checkout -b master
+            echo "master 分支不存在，跳过"
           fi
-          
-          # 合并默认分支的内容
-          git merge --allow-unrelated-histories -X theirs $DEFAULT_BRANCH --no-commit || true
-          git add -A
-          git commit -m "Merge from $DEFAULT_BRANCH" || true
-          
-          # 推送到 master
-          git push origin master --force-with-lease || git push origin master --force
-          echo "✅ master 分支同步完成"
