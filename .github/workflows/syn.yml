@@ -1,0 +1,38 @@
+name: Sync DBY and N3RD
+
+on: workflow_dispatch
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. 检出代码
+      - uses: actions/checkout@v4
+      
+      # 2. 配置Git
+      - name: Setup Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+      
+      # 3. 同步DBY仓库
+      - name: Sync DBY
+        run: |
+          echo "同步 DBY 仓库..."
+          rm -rf DBY
+          git clone --depth 1 https://github.com/huangxinyueus/dby.git DBY || echo "DBY克隆失败"
+      
+      # 4. 同步N3RD仓库  
+      - name: Sync N3RD
+        run: |
+          echo "同步 N3RD 仓库..."
+          rm -rf N3RD
+          git clone --depth 1 https://github.com/n3rddd/N3RD.git N3RD || echo "N3RD克隆失败"
+      
+      # 5. 提交和推送
+      - name: Commit and Push
+        run: |
+          git add .
+          git commit -m "Sync: $(date)" || echo "没有更改"
+          git push || echo "推送失败"
