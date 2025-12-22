@@ -1,0 +1,90 @@
+name: Sync DBY and N3RD Repositories
+
+on: 
+  schedule: 
+    - cron: '0 */6 * * *'  # 每6小时运行一次（UTC时间） 
+  workflow_dispatch:        # 支持手动运行 
+
+concurrency: 
+  group: sync_repositories_lock 
+  cancel-in-progress: true   # 防止多个任务同时运行 
+
+jobs: 
+  sync_repositories: 
+    runs-on: ubuntu-latest 
+
+    steps: 
+      - name: Checkout default branch 
+        uses: actions/checkout@v3 
+
+      - name: Set up Git config 
+        run: | 
+          git config user.name "github-actions[bot]" 
+          git config user.email "github-actions[bot]@users.noreply.github.com" 
+
+      # ✅ 先重置为远程默认分支（防止后续 clone 被覆盖） 
+      - name: Reset local repo to remote default branch 
+        run: | 
+          set -e 
+          DEFAULT_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p') 
+          echo "Detected default branch: $DEFAULT_BRANCH" 
+          git fetch origin $DEFAULT_BRANCH 
+          git checkout $DEFAULT_BRANCH || git checkout -b $DEFAULT_BRANCH 
+          git reset --hard origin/$DEFAULT_BRANCH 
+          git clean -fdx 
+          echo "✅ Reset 完成" 
+
+      # ✅ 同步两个仓库到子目录
+      - name: Fetch repositories 
+        run: | 
+          echo "==== 开始同步仓库 ====" 
+          mkdir -p DBY N3RD
+          
+          # 同步 DBY 仓库
+          echo "→ 同步 huangxinyueus/dby 到 DBY 文件夹"
+          rm -rf DBY/* temp-DBY
+          git clone --depth 1 --branch main https://github.com/huangxinyueus/dby.git temp-DBY
+          cp -r temp-DBY/* DBY/
+          rm -rf temp-DBY
+          
+          # 同步 N3RD 仓库
+          echo "→ 同步 n3rddd/N3RD 到 N3RD 文件夹"
+          rm -rf N3RD/* temp-N3RD
+          git clone --depth 1 --branch main https://github.com/n3rddd/N3RD.git temp-N3RD
+          cp -r temp-N3RD/* N3RD/
+          rm -rf temp-N3RD
+
+          echo "==== 同步完成 ====" 
+          find DBY N3RD -type f -exec touch {} + 
+
+      # ✅ 提交并推送到默认分支 
+      - name: Commit and push to default branch 
+        run: | 
+          git add DBY/ N3RD/
+          git commit -m "Sync repositories - DBY & N3RD - $(date '+%Y-%m-%d %H:%M:%S')" || echo "No changes" 
+          DEFAULT_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p') 
+          git push origin $DEFAULT_BRANCH 
+
+      # ✅ 切换到 master 并同步内容 
+      - name: Sync to master branch 
+        run: | 
+          DEFAULT_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p') 
+          git fetch origin 
+          if git show-ref --quiet refs/remotes/origin/master; then 
+            git checkout master 
+          else 
+            git checkout -b master 
+          fi 
+          git reset --hard origin/$DEFAULT_BRANCH 
+          git push origin master || true 
+
+  cleanup_runs: 
+    runs-on: ubuntu-latest 
+    needs: sync_repositories 
+    steps: 
+      - name: Delete old workflow runs (keep 10, 3 天之前 max) 
+        uses: Mattraks/delete-workflow-runs@v2 
+        with: 
+          token: ${{ secrets.GITHUB_TOKEN }} 
+          retain_days: 3 
+          keep_minimum_runs: 10
