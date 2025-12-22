@@ -1,0 +1,35 @@
+name: Verify Sync Results
+
+on: workflow_dispatch
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Check folder contents
+        run: |
+          echo "=== 同步结果验证 ==="
+          echo ""
+          
+          if [ -d "DBY" ]; then
+            echo "📁 DBY 文件夹:"
+            echo "文件数量: $(find DBY -type f 2>/dev/null | wc -l)"
+            echo "最新文件:"
+            find DBY -type f -exec ls -la {} \; 2>/dev/null | head -5
+          else
+            echo "❌ DBY 文件夹不存在"
+          fi
+          
+          echo ""
+          
+          if [ -d "N3RD" ]; then
+            echo "📁 N3RD 文件夹:"
+            echo "文件数量: $(find N3RD -type f 2>/dev/null | wc -l)"
+            echo "最新文件:"
+            find N3RD -type f -exec ls -la {} \; 2>/dev/null | head -5
+          else
+            echo "❌ N3RD 文件夹不存在"
+          fi
