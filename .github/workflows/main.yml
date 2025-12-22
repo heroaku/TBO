@@ -1,9 +1,7 @@
 name: Sync DBY and N3RD Repositories
 
 on: 
-  schedule: 
-    - cron: '0 */6 * * *'  # 每6小时运行一次（UTC时间） 
-  workflow_dispatch:        # 支持手动运行 
+  workflow_dispatch:        # 只支持手动运行 
 
 concurrency: 
   group: sync_repositories_lock 
@@ -14,69 +12,173 @@ jobs:
     runs-on: ubuntu-latest 
 
     steps: 
-      - name: Checkout default branch 
-        uses: actions/checkout@v3 
+      # ✅ 步骤1：检出代码（使用v4版本，兼容性更好）
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 获取完整历史（方便分支操作）
 
       - name: Set up Git config 
         run: | 
           git config user.name "github-actions[bot]" 
           git config user.email "github-actions[bot]@users.noreply.github.com" 
 
-      # ✅ 先重置为远程默认分支（防止后续 clone 被覆盖） 
-      - name: Reset local repo to remote default branch 
+      # ✅ 步骤2：获取远程信息并设置默认分支
+      - name: Setup default branch 
         run: | 
-          set -e 
-          DEFAULT_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p') 
-          echo "Detected default branch: $DEFAULT_BRANCH" 
-          git fetch origin $DEFAULT_BRANCH 
-          git checkout $DEFAULT_BRANCH || git checkout -b $DEFAULT_BRANCH 
-          git reset --hard origin/$DEFAULT_BRANCH 
-          git clean -fdx 
-          echo "✅ Reset 完成" 
+          set -e
+          # 获取远程默认分支
+          echo "获取远程分支信息..."
+          git fetch origin
+          
+          # 方法1：尝试从远程获取默认分支名
+          if DEFAULT_BRANCH=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5); then
+            echo "检测到默认分支: $DEFAULT_BRANCH"
+          else
+            # 方法2：如果没有明确设置，尝试常见分支名
+            echo "尝试检测常见分支..."
+            for branch in main master; do
+              if git show-ref --verify --quiet refs/remotes/origin/$branch; then
+                DEFAULT_BRANCH=$branch
+                echo "使用分支: $DEFAULT_BRANCH"
+                break
+              fi
+            done
+          fi
+          
+          # 方法3：如果都没有，创建新的main分支
+          if [ -z "$DEFAULT_BRANCH" ]; then
+            DEFAULT_BRANCH="main"
+            echo "没有检测到远程分支，将创建新分支: $DEFAULT_BRANCH"
+            # 创建初始提交（如果是空仓库）
+            echo "# Initial commit" > README.md
+            git add README.md
+            git commit -m "Initial commit" || true
+            git branch -M $DEFAULT_BRANCH
+          fi
+          
+          # 切换到默认分支
+          echo "切换到分支: $DEFAULT_BRANCH"
+          git checkout -B $DEFAULT_BRANCH
+          
+          # 保存分支名供后续步骤使用
+          echo "DEFAULT_BRANCH=$DEFAULT_BRANCH" >> $GITHUB_ENV
 
-      # ✅ 同步两个仓库到子目录
+      # ✅ 步骤3：同步两个仓库到子目录
       - name: Fetch repositories 
         run: | 
           echo "==== 开始同步仓库 ====" 
+          
+          # 创建目标文件夹
           mkdir -p DBY N3RD
           
           # 同步 DBY 仓库
           echo "→ 同步 huangxinyueus/dby 到 DBY 文件夹"
-          rm -rf DBY/* temp-DBY
-          git clone --depth 1 --branch main https://github.com/huangxinyueus/dby.git temp-DBY
-          cp -r temp-DBY/* DBY/
-          rm -rf temp-DBY
+          if [ -d "temp-DBY" ]; then
+            rm -rf temp-DBY
+          fi
+          
+          # 使用更稳健的克隆方式
+          git clone --depth 1 --branch main https://github.com/huangxinyueus/dby.git temp-DBY 2>&1 || {
+            echo "警告：克隆 DBY 仓库失败，尝试其他分支..."
+            # 尝试其他可能的分支
+            git clone --depth 1 https://github.com/huangxinyueus/dby.git temp-DBY
+            # 检查是否有main分支，没有则使用默认分支
+            cd temp-DBY
+            if ! git show-ref --verify --quiet refs/heads/main; then
+              # 获取实际分支名
+              ACTUAL_BRANCH=$(git branch -a | grep -E "^\*" | cut -d' ' -f2)
+              echo "DBY 仓库使用分支: $ACTUAL_BRANCH"
+            fi
+            cd ..
+          }
+          
+          # 复制文件
+          if [ -d "temp-DBY" ]; then
+            cp -r temp-DBY/* DBY/ 2>/dev/null || echo "DBY 仓库可能是空的或复制失败"
+            rm -rf temp-DBY
+          fi
           
           # 同步 N3RD 仓库
           echo "→ 同步 n3rddd/N3RD 到 N3RD 文件夹"
-          rm -rf N3RD/* temp-N3RD
-          git clone --depth 1 --branch main https://github.com/n3rddd/N3RD.git temp-N3RD
-          cp -r temp-N3RD/* N3RD/
-          rm -rf temp-N3RD
+          if [ -d "temp-N3RD" ]; then
+            rm -rf temp-N3RD
+          fi
+          
+          # 使用更稳健的克隆方式
+          git clone --depth 1 --branch main https://github.com/n3rddd/N3RD.git temp-N3RD 2>&1 || {
+            echo "警告：克隆 N3RD 仓库失败，尝试其他分支..."
+            git clone --depth 1 https://github.com/n3rddd/N3RD.git temp-N3RD
+          }
+          
+          # 复制文件
+          if [ -d "temp-N3RD" ]; then
+            cp -r temp-N3RD/* N3RD/ 2>/dev/null || echo "N3RD 仓库可能是空的或复制失败"
+            rm -rf temp-N3RD
+          fi
 
           echo "==== 同步完成 ====" 
-          find DBY N3RD -type f -exec touch {} + 
+          
+          # 更新文件时间戳确保 Git 检测到变化
+          if [ -d "DBY" ]; then
+            find DBY -type f -exec touch {} + 2>/dev/null || true
+          fi
+          if [ -d "N3RD" ]; then
+            find N3RD -type f -exec touch {} + 2>/dev/null || true
+          fi
 
-      # ✅ 提交并推送到默认分支 
-      - name: Commit and push to default branch 
-        run: | 
-          git add DBY/ N3RD/
-          git commit -m "Sync repositories - DBY & N3RD - $(date '+%Y-%m-%d %H:%M:%S')" || echo "No changes" 
-          DEFAULT_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p') 
-          git push origin $DEFAULT_BRANCH 
+      # ✅ 步骤4：提交并推送到默认分支
+      - name: Commit and push changes
+        run: |
+          set -e
+          
+          # 检查是否有更改
+          if ! git diff --quiet || ! git diff --cached --quiet; then
+            echo "检测到更改，准备提交..."
+            
+            # 添加所有文件
+            git add -A
+            
+            # 提交更改
+            git commit -m "Sync repositories - DBY & N3RD - $(date '+%Y-%m-%d %H:%M:%S')"
+            
+            # 推送到远程
+            echo "推送更改到远程..."
+            DEFAULT_BRANCH=${DEFAULT_BRANCH:-main}
+            
+            # 第一次推送需要设置上游分支
+            if ! git push --set-upstream origin $DEFAULT_BRANCH 2>&1; then
+              echo "设置上游分支失败，尝试直接推送..."
+              git push origin $DEFAULT_BRANCH --force
+            fi
+            
+            echo "✅ 提交和推送完成"
+          else
+            echo "没有检测到更改，跳过提交"
+          fi
 
-      # ✅ 切换到 master 并同步内容 
-      - name: Sync to master branch 
-        run: | 
-          DEFAULT_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p') 
-          git fetch origin 
-          if git show-ref --quiet refs/remotes/origin/master; then 
-            git checkout master 
-          else 
-            git checkout -b master 
-          fi 
-          git reset --hard origin/$DEFAULT_BRANCH 
-          git push origin master || true 
+      # ✅ 步骤5：确保 master 分支存在并同步
+      - name: Ensure master branch exists
+        run: |
+          set -e
+          DEFAULT_BRANCH=${DEFAULT_BRANCH:-main}
+          
+          echo "当前默认分支: $DEFAULT_BRANCH"
+          
+          # 检查 master 分支是否存在
+          if git show-ref --verify --quiet refs/remotes/origin/master; then
+            echo "master 分支已存在，切换到 master"
+            git checkout master
+            git reset --hard origin/$DEFAULT_BRANCH
+          else
+            echo "master 分支不存在，从 $DEFAULT_BRANCH 创建"
+            git checkout -b master
+          fi
+          
+          # 推送到 master 分支
+          echo "推送到 master 分支..."
+          git push origin master --force-with-lease || git push origin master --force
+          echo "✅ master 分支同步完成"
 
   cleanup_runs: 
     runs-on: ubuntu-latest 
