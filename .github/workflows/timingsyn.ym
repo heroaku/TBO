@@ -1,0 +1,45 @@
+name: Auto Sync to Folders
+
+on:
+  # 手动触发
+  workflow_dispatch:
+  # 每天凌晨3点自动同步（UTC时间）
+  schedule:
+    - cron: '0 3 * * *'
+  # 当代码推送到main分支时触发
+  push:
+    branches: [ main ]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Sync repositories to folders
+        run: |
+          # 创建目录
+          mkdir -p DBY N3RD
+          
+          # 同步DBY
+          echo "同步DBY..."
+          TEMP=$(mktemp -d)
+          git clone --depth 1 https://github.com/huangxinyueus/dby.git "$TEMP"
+          cp -r "$TEMP"/* DBY/ 2>/dev/null || true
+          rm -rf "$TEMP"
+          
+          # 同步N3RD
+          echo "同步N3RD..."
+          TEMP=$(mktemp -d)
+          git clone --depth 1 https://github.com/n3rddd/N3RD.git "$TEMP"
+          cp -r "$TEMP"/* N3RD/ 2>/dev/null || true
+          rm -rf "$TEMP"
+      
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add DBY/ N3RD/
+          git commit -m "Auto sync: $(date)" || exit 0
+          git push
