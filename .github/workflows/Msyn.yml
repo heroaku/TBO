@@ -1,0 +1,50 @@
+name: Safe Sync
+
+on: workflow_dispatch
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Sync repositories safely
+        run: |
+          # 配置
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          
+          # 同步列表
+          repos=(
+            "X:https://github.com/alantang1977/X.git"
+          )
+          
+          # 同步
+          synced_folders=()
+          for repo in "${repos[@]}"; do
+            folder="${repo%%:*}"
+            url="${repo#*:}"
+            
+            echo "处理: $folder"
+            tmp=$(mktemp -d)
+            
+            if git clone --depth 1 "$url" "$tmp" 2>/dev/null; then
+              mkdir -p "$folder"
+              rm -rf "$folder"/*
+              cp -r "$tmp"/* "$folder"/ 2>/dev/null
+              synced_folders+=("$folder")
+            fi
+            
+            rm -rf "$tmp"
+          done
+          
+          # 提交（使用安全的提交信息）
+          git add .
+          if [ ${#synced_folders[@]} -gt 0 ]; then
+            commit_msg="Sync folders: ${synced_folders[*]}"
+          else
+            commit_msg="No changes"
+          fi
+          
+          git commit -m "$commit_msg" || exit 0
+          git push
