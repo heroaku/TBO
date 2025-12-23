@@ -18,9 +18,10 @@ jobs:
         run: |
           # 定义要同步的仓库列表
           declare -A repos=(
-           ["NFXC"]="https://github.com/yoursmile66/TVBox.git"
+           # ["NFXC"]="https://github.com/yoursmile66/TVBox.git"
            # ["DBY"]="https://github.com/huangxinyueus/dby.git"
            # ["N3RD"]="https://github.com/n3rddd/N3RD.git"
+             ["X"]="https://github.com/alantang1977/X.git"
             # 您可以在这里添加更多
             # ["FOLDER_NAME"]="https://github.com/user/repo.git"
           )
