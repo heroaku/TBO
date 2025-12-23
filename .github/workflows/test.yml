@@ -1,0 +1,33 @@
+name: Check External Repo First
+
+on: workflow_dispatch
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Analyze external repository
+        run: |
+          echo "=== 分析外部仓库内容 ==="
+          
+          # 克隆到临时目录
+          tmp=$(mktemp -d)
+          git clone --depth 1 https://github.com/yoursmile66/TVBox.git "$tmp"
+          
+          echo "仓库大小:"
+          du -sh "$tmp"
+          
+          echo ""
+          echo "文件类型统计:"
+          find "$tmp" -type f | sed 's/.*\.//' | sort | uniq -c | sort -rn | head -20
+          
+          echo ""
+          echo "最大的10个文件:"
+          find "$tmp" -type f -exec du -h {} + 2>/dev/null | sort -rh | head -10
+          
+          echo ""
+          echo "文件总数:"
+          find "$tmp" -type f | wc -l
+          
+          rm -rf "$tmp"
