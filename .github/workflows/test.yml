@@ -1,0 +1,45 @@
+name: Check and Fix Sync
+
+on: workflow_dispatch
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check current settings
+        run: |
+          echo "=== 检查设置 ==="
+          echo "1. 请确认仓库设置:"
+          echo "   - Settings → Actions → General"
+          echo "   - Workflow permissions 选择 'Read and write permissions'"
+          echo ""
+          echo "2. 请确认分支保护:"
+          echo "   - Settings → Branches → Branch protection rules"
+          echo "   - 暂时禁用或允许 GitHub Actions 推送"
+          echo ""
+          
+      - uses: actions/checkout@v4
+        
+      - name: Simple sync
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          
+          # 只创建一个简单的测试文件
+          mkdir -p AX
+          echo "# Test file" > AX/test.md
+          echo "Created at: $(date)" >> AX/test.md
+          
+      - name: Test push
+        run: |
+          git add .
+          git commit -m "Test"
+          
+          echo "测试推送..."
+          if git push; then
+            echo "✅ 推送成功"
+          else
+            echo "❌ 推送失败"
+            echo "请检查上面的仓库设置建议"
+          fi
