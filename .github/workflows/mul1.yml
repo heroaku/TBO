@@ -1,0 +1,104 @@
+name: Sync Multiple Repos to Folders
+
+on: workflow_dispatch
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+      
+      - name: Sync multiple repositories
+        run: |
+          echo "=== 开始同步 ==="
+          
+          # 定义要同步的仓库列表
+          declare -A repos=(
+            ["X"]="https://github.com/alantang1977/X.git"
+            # ["DBY"]="https://github.com/huangxinyueus/dby.git"
+            # ["N3RD"]="https://github.com/n3rddd/N3RD.git"
+            # 您可以在这里添加更多
+            # ["FOLDER_NAME"]="https://github.com/user/repo.git"
+          )
+          
+          # 同步成功的文件夹列表
+          success_folders=()
+          
+          for folder in "${!repos[@]}"; do
+            echo ""
+            echo "🔄 同步: $folder"
+            echo "源仓库: ${repos[$folder]}"
+            
+            # 确保文件夹存在
+            mkdir -p "$folder"
+            
+            # 清空文件夹内容（保留文件夹本身）
+            rm -rf "$folder"/*
+            
+            # 创建临时目录
+            TEMP=$(mktemp -d)
+            
+            # 尝试克隆
+            if git clone --depth 1 "${repos[$folder]}" "$TEMP" 2>/dev/null; then
+              # 复制所有文件到目标文件夹
+              cp -r "$TEMP"/* "$folder"/ 2>/dev/null || true
+              
+              # 统计文件数量
+              file_count=$(find "$folder" -type f 2>/dev/null | wc -l)
+              echo "✅ 成功 ($file_count 个文件)"
+              
+              # 记录成功的文件夹
+              success_folders+=("$folder")
+            else
+              echo "❌ 失败 (仓库可能不存在或无法访问)"
+              
+              # 创建错误标记文件
+              echo "# 同步失败" > "$folder/ERROR.md"
+              echo "源仓库: ${repos[$folder]}" >> "$folder/ERROR.md"
+            fi
+            
+            # 清理临时目录
+            rm -rf "$TEMP"
+          done
+          
+          echo ""
+          echo "=== 同步完成 ==="
+          
+          # 保存成功文件夹列表
+          if [ ${#success_folders[@]} -gt 0 ]; then
+            echo "FOLDERS=${success_folders[*]}" >> $GITHUB_ENV
+          fi
+      
+      - name: Commit and push (Safe)
+        run: |
+          echo "=== 提交更改 ==="
+          
+          # 添加文件
+          git add .
+          
+          # 安全的提交信息
+          if [ -n "$FOLDERS" ]; then
+            # 如果有成功同步的文件夹，使用文件夹名
+            commit_message="Sync folders: $FOLDERS"
+          else
+            # 如果没有成功，使用通用信息
+            commit_message="Update repository"
+          fi
+          
+          echo "提交信息: $commit_message"
+          
+          # 提交（如果失败则退出）
+          git commit -m "$commit_message" || {
+            echo "没有更改需要提交"
+            exit 0
+          }
+          
+          # 推送
+          echo "推送到远程仓库..."
+          git push
