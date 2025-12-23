@@ -17,18 +17,13 @@ jobs:
           git config user.email "github-actions@github.com"
       
       # 3. 同步DBY仓库
-      - name: Sync DBY
+      - name: Sync AX
         run: |
-          echo "同步 DBY 仓库..."
+          echo "同步 AX 仓库..."
           rm -rf DBY
-          git clone --depth 1 https://github.com/huangxinyueus/dby.git DBY || echo "DBY克隆失败"
+          git clone --depth 1 https://github.com/alantang1977/X.git AX || echo "DBY克隆失败"
       
-      # 4. 同步N3RD仓库  
-      - name: Sync N3RD
-        run: |
-          echo "同步 N3RD 仓库..."
-          rm -rf N3RD
-          git clone --depth 1 https://github.com/n3rddd/N3RD.git N3RD || echo "N3RD克隆失败"
+
       
       # 5. 提交和推送
       - name: Commit and Push
