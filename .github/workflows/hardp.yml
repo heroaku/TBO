@@ -39,11 +39,11 @@ jobs:
           git add .
           git commit -m "Sync"
           
-      - name: Push with token
-        env:
-          WORKSPACE: ${{ env.WORKSPACE }}
-        run: |
-          cd "$WORKSPACE"
+     # - name: Push with token
+      #  env:
+      #    WORKSPACE: ${{ env.WORKSPACE }}
+      #  run: |
+      #    cd "$WORKSPACE"
           
           # 使用token推送（如果需要创建PAT）
           # git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/heroaku/TBO.git
