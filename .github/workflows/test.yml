@@ -13,7 +13,7 @@ jobs:
           
           # 克隆到临时目录
           tmp=$(mktemp -d)
-          git clone --depth 1 https://github.com/yoursmile66/TVBox.git "$tmp"
+          git clone --depth 1 https://github.com/alantang1977/X.git "$tmp"
           
           echo "仓库大小:"
           du -sh "$tmp"
