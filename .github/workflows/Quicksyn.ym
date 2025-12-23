@@ -1,0 +1,43 @@
+name: Quick Sync
+
+on: workflow_dispatch
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup & Sync
+        run: |
+          # 配置Git
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          
+          # 同步列表（每行：文件夹:URL）
+          while IFS=: read -r folder url; do
+            [[ -z "$folder" || "$folder" == \#* ]] && continue
+            
+            echo "📦 同步 $folder..."
+            tmp=$(mktemp -d)
+            
+            if git clone --depth 1 "$url" "$tmp" 2>/dev/null; then
+              mkdir -p "$folder"
+              rm -rf "$folder"/*
+              cp -r "$tmp"/* "$folder"/ 2>/dev/null
+              echo "  ✅ 成功"
+            else
+              echo "  ❌ 失败"
+            fi
+            
+            rm -rf "$tmp"
+          done << 'EOF'
+          NFXC:https://github.com/yoursmile66/TVBox.git
+          # DBY:https://github.com/huangxinyueus/dby.git
+          # N3RD:https://github.com/n3rddd/N3RD.git
+          EOF
+          
+          # 提交和推送
+          git add .
+          git commit -m "Sync $(date)" || exit 0
+          git push
