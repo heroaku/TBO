@@ -20,7 +20,7 @@ jobs:
           
           # 定义要同步的仓库列表
           declare -A repos=(
-            ["X"]="https://github.com/alantang1977/X.git"
+            ["AX"]="https://github.com/alantang1977/X.git"
             # ["DBY"]="https://github.com/huangxinyueus/dby.git"
             # ["N3RD"]="https://github.com/n3rddd/N3RD.git"
             # 您可以在这里添加更多
