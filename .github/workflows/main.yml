@@ -27,7 +27,8 @@ jobs:
             # "DBY:https://github.com/huangxinyueus/dby.git"
             # "N3RD:https://github.com/n3rddd/N3RD.git"
             # 在这里添加更多仓库
-            "XMB:https://github.com/xmbjm/svip.git"
+            #"XMB:https://github.com/xmbjm/svip.git"
+            "ATX:https://github.com/alantang1977/X.git"
           )
           
           for repo in "${repos[@]}"; do
