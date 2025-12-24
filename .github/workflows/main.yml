@@ -31,6 +31,7 @@ jobs:
             "BPT:https://github.com/BP3388/TVBOX.git"
             "NMB:https://github.com/ninemui/9muiBOX.git"
             "YWB:https://github.com/yuanwangokk-1/TV-BOX.git"
+            "QIS:https://github.com/qist/tvbox.git"
           )
           
           for repo in "${repos[@]}"; do
