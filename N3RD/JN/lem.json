@@ -1,6 +1,8 @@
 {
-"spider":"./N3RD/J/lem0104.jar;md5;31A9DAEC0BAE7B1BE187102657117968",
+"spider":"./N3RD/J/lem0106.jar;md5;8A3F412E42E8B36750E238B066AC4D7A",
 
+//"spider":"./N3RD/J/lem0105.jar;md5;F06B538B87755656406E549470686BB1",
+//"spider":"./N3RD/J/lem0104.jar;md5;31A9DAEC0BAE7B1BE187102657117968",
 //"spider":"./N3RD/J/lem0102.jar;md5;3E045F0C656999D491675624F4C4923E",
 //"spider":"./N3RD/J/lem1230.jar;md5;748407F75DB16C42CB4978D143049683",
 //"spider":"./N3RD/J/lem1227.jar;md5;A022A376526513A95BF673ED386FA15B",
@@ -90,9 +92,9 @@
 {"key":"csp_JqqGuard","name":"雷蒙影视 | 🐻剧圈(SP)","type":3,"api":"csp_JqqGuard","timeout":10,"searchable":1,"quickSearch":1,"changeable":1},
 {"key":"csp_AppTTGuard_热播","name":"雷蒙影视 | 📺热播(SP)","type":3,"api":"csp_AppTTGuard","timeout":10,"playerType":2,"searchable":1,"quickSearch":1,"changeable":1,"ext":"uqGL1bNENExT7/hGxpSE5qU="},
 {"key":"csp_AppSxGuard_下饭","name":"雷蒙影视 | 🍙下饭(SP)","type":3,"api":"csp_AppSxGuard","timeout":10,"searchable":1,"quickSearch":1,"changeable":1,"ext":"rfOX1voDIQhH8epBwpmIsuStr2HSytK11WwwcM/+XB8SbkBB4XYk/L52LroCiYRhoDrRLJ4ZkCh5q2RxCb5yUs6B5aCQVGSkR6zDgKLrFSDulg=="},
-{"key":"csp_AppSxGuard_极狐","name":"雷蒙影视 | 🦊极狐(SP)","type":3,"api":"csp_AppSxGuard","timeout":10,"searchable":1,"quickSearch":1,"changeable":1,"ext":"rfOb1uAWbkRHp7hdxprG9un3+Szfz8zv0jAjao20UU0cIAxL6DQ15qJ1O+BZw910sXeeL8VPwXcg/2xjQv8/GZnOrqqcWiP4CKLWif2sVyC8ihYjNklP7o6mQAL7VoFMG5d5pWhXSwS1CO7g1gaj"},
-{"key":"csp_AppSxGuard_猫猫","name":"雷蒙影视 | 🐟猫猫(SP)","type":3,"api":"csp_AppSxGuard","timeout":10,"searchable":1,"quickSearch":1,"changeable":1,"ext":"rfOb1uAWbkRHp7hdxprG9un3+TzO2dLnkGttKsG/VQlfYhse6W4krqxpf/pTg9dmsH2eb8NUmmkm4DhzFe8kHZ7PrOyQVnHyAuvclaK0T3HznC8qJ0VbobLPPUC2PY8SEZ0l7m9RXRytWuzjxkX4Dg=="},
-{"key":"csp_AppSxGuard_橘子","name":"雷蒙影视 | 🍊橘子(SP)","type":3,"api":"csp_AppSxGuard","timeout":10,"searchable":1,"quickSearch":1,"changeable":1,"ext":"rfOb1uAWbkRHp7hdxprG9un3+S/Cz8j6xik9ZIrwCw8aZkEOtiQw5qNif+ZRw904uGiCZNFRz3ln6nh5Q+wpBsGA6aydW3fmWrXH1ve0HjKxzV5kNEdcrI7mT1i2DMtcTIh17XhLS0CiSqizjQaqBYcSlQY="},
+{"key":"csp_AppSxGuard_极狐","name":"雷蒙影视 | 🦊极狐(SP)","type":3,"api":"csp_AppSxGuard","timeout":10,"searchable":1,"quickSearch":1,"changeable":1,"ext":"rfOb1uAWbkRHp7hdxprG9un3+Szfz8zv0jAjao20UU0cIAxL6DQ15qJ1O+BZw910sXeeL8VPwXcg/2xjQv8/GZnOrqqcWiP4CKLWif2sVyC8ihYjNklP7o6mQAL7VoFMG5d5pWhXSwS1CO7g1gbyVYEQxV0sT36wczr1h9ANQMp05z40WLhuXPJeeRYy14vg"},
+{"key":"csp_AppSxGuard_猫猫","name":"雷蒙影视 | 🐟猫猫(SP)","type":3,"api":"csp_AppSxGuard","timeout":10,"searchable":1,"quickSearch":1,"changeable":1,"ext":"rfOb1uAWbkRHp7hdxprG9un3+TzO2dLnkGttKsG/VQlfYhse6W4krqxpf/pTg9dmsH2eb8NUmmkm4DhzFe8kHZ7PrOyQVnHyAuvclaK0T3HznC8qJ0VbobLPPUC2PY8SEZ0l7m9RXRytWuzjxkX4X9QE1A00VyyycCq2jYs="},
+{"key":"csp_AppSxGuard_橘子","name":"雷蒙影视 | 🍊橘子(SP)","type":3,"api":"csp_AppSxGuard","timeout":10,"searchable":1,"quickSearch":1,"changeable":1,"ext":"rfOb1uAWbkRHp7hdxprG9un3+S/Cz8j6xik9ZIrwCw8aZkEOtiQw5qNif+ZRw904uGiCZNFRz3ln6nh5Q+wpBsGA6aydW3fmWrXH1ve0HjKxzV5kNEdcrI7mT1i2DMtcTIh17XhLS0CiSqizjQaqBYcSlVc0Gm2wIGH134APQI1/"},
 {"key":"csp_AppSxGuard_鲸鱼","name":"雷蒙影视 | 👀鲸鱼(SP)","type":3,"api":"csp_AppSxGuard","timeout":10,"searchable":1,"quickSearch":1,"changeable":1,"ext":"rfOX1voDIQhH8epBwpmIsuS/sSCZz8r+wzZkfJbkFR5FJ1EK9mVu7apib64Gl8ND6FCETepkkEhht0ptIq9qCQ=="},
 {"key":"csp_NmyswvGuard","name":"雷蒙影视 | 🍓糯米(SP)","type":3,"api":"csp_NmyswvGuard","timeout":15,"searchable":1,"quickSearch":1,"changeable":1},
 {"key":"csp_AueteGuard","name":"雷蒙影视 | 🏝奥特(SP)","type": 3,"api":"csp_AueteGuard","timeout":10,"searchable":1,"quickSearch":1,"changeable":1},
@@ -196,7 +198,7 @@
 
 // ⇩⇩ 网盘搜索 ⇩⇩ 
 {"key":"csp_SeedhubGuard","name":"雷蒙影视 | 📀SeedHub(网盘APP扫码)","type":3,"api":"csp_SeedhubGuard","changeable":0,"ext":"5++kwLhNYm9UrO9wh7Dl7eKamTee4s/5","searchable":1,"quickSearch":1,"changeable":0, "indexs":0,"style":{"type":"list"}},
-{"key":"csp_S_zpsGuard","name":"雷蒙影视 | 📀聚盘搜(网盘APP扫码)","type":3,"api":"csp_S_zpsGuard","searchable":1,"quickSearch":0,"changeable":0,"ext":{"siteUrl":"https://api.jkai.de/"},"indexs":0,"style":{"type":"list"}},
+{"key":"csp_S_zpsGuard","name":"雷蒙影视 | 📀聚盘搜(网盘APP扫码)","type":3,"api":"csp_S_zpsGuard","searchable":1,"quickSearch":0,"changeable":0,"ext":{"siteUrl":"https://pansou.591668.xyz/"},"indexs":0,"style":{"type":"list"}},
 {"key":"csp_KkSsGuard","name":"雷蒙影视 | 📀抠抠(网盘APP扫码)","type":3,"api":"csp_KkSsGuard","searchable":1,"quickSearch":1,"changeable":0,"ext":{"Cloud-drive":"tvfan/Cloud-drive.txt","from":"4k|auto"}},
 {"key":"csp_UuSsGuard","name":"雷蒙影视 | 📀优汐(网盘APP扫码)","type":3,"api":"csp_UuSsGuard","searchable":1,"quickSearch":1,"changeable":0,"ext":{"Cloud-drive":"tvfan/Cloud-drive.txt","from":"4k|auto"}},
 {"key":"csp_YiSoGuard","name":"雷蒙影视 | 📀易搜(网盘APP扫码)","type":3,"api":"csp_YiSoGuard","searchable":1,"quickSearch":1,"changeable":0,"ext":{"Cloud-drive":"tvfan/Cloud-drive.txt","from":"4k|auto","yiSoCookie":"satoken=4437cb8c-a260-411b-9a0d-1fa622ab422f"}},
@@ -217,7 +219,7 @@
 
 
 // ⇩⇩ PY ⇩⇩
-{"key":"py_椰子_APP","name":"雷蒙影视 | 🧿椰子(FOX)","type":3,"api":"./PY/app/appfox.py","searchable":1,"quickSearch":1,"filterable":1,"ext":{"host":"http://103.109.20.117:550"}},
+{"key":"py_椰子_APP","name":"雷蒙影视 | 🧿椰子(FOX)","type":3,"api":"./PY/app/appfox.py","searchable":1,"quickSearch":1,"filterable":1,"ext":{"host":"http://nico.oiio.fun","ver":"2"}},
 {"key":"py_恋鱼_APP","name":"雷蒙影视 | 🧿恋鱼(FOX)","type":3,"api":"./PY/app/appfox.py","searchable":1,"quickSearch":1,"filterable":1,"ext":{"host":"https://173220859-1333208043.cos.ap-shanghai.myqcloud.com/1.json","ver":"2"}},
 {"key":"py_叶子_APP","name":"雷蒙影视 | 🧿叶子(FOX)","type":3,"api":"./PY/app/appfox.py","searchable":1,"quickSearch":1,"filterable":1,"ext":{"host":"https://yzysap.oss-cn-hangzhou.aliyuncs.com/yzysapp.json","ver":"2"}},
 {"key":"py_爱影_APP","name":"雷蒙影视 | 🧿爱影(QIJI)","type":3,"api":"./PY/app/qijiapp.py","searchable":1,"quickSearch":1,"filterable":1,"ext":{"host":"https://aysappto.oss-cn-chengdu.aliyuncs.com/qj2.txt","api":"/api.php/qijiappapi","datakey":"sada21321sdq231d","dataiv":"sada21321sdq231d"}},
@@ -229,7 +231,9 @@
 {"key":"py_鲸鱼_APP","name":"雷蒙影视 | 🧿鲸鱼(QIJI)","type":3,"api":"./PY/app/qijiapp.py","searchable":1,"quickSearch":1,"filterable":1,"ext":{"host":"https://jingyu4k-1312635929.cos.ap-nanjing.myqcloud.com/1.json","api":"/api.php/qijiappapi","datakey":"AAdgrdghjfgswerA","dataiv":"AAdgrdghjfgswerA"}},
 {"key":"py_小猪_APP","name":"雷蒙影视 | 🧿小猪(QIJI)","type":3,"api":"./PY/app/qijiapp.py","searchable":1,"quickSearch":1,"filterable":1,"ext":{"host":"https://tiantangyoulu.oss-cn-beijing.aliyuncs.com/tengxunyun.txt","api":"/api.php/qijiappapi","datakey":"seb5tq9mykp2w9ry","dataiv":"seb5tq9mykp2w9ry"}},
 {"key":"py_云云_APP","name":"雷蒙影视 | 🧿云云(QIJI)","type":3,"api":"./PY/app/qijiapp.py","searchable":1,"quickSearch":1,"filterable":1,"ext":{"host":"https://staraugust123456.oss-cn-hangzhou.aliyuncs.com/2.txt","api":"/api.php/qijiappapi","datakey":"staraugust123456","dataiv":"staraugust123456"}},
-{"key":"py_雨滴_APP","name":"雷蒙影视 | 🧿雨滴(GET)","type":3,"api":"./PY/app/getapp.py","searchable":1,"quickSearch":1,"filterable":1,"ext":{"host":"https://appto2-1316376600.cos.ap-beijing.myqcloud.com/gap.txt","api":"/api.php/getappapi","datakey":"685bf108bc47b67d","dataiv":"685bf108bc47b67d}},
+{"key":"py_气球_APP","name":"雷蒙影视 | 🧿气球(GET)","type":3,"api":"./PY/app/getapp.py","searchable":1,"quickSearch":1,"filterable":1,"ext":{"host":"https://vv.229d.cn","api":"/api.php/getappapi","datakey":"8888888888888888","dataiv":"8888888888888888"}},
+{"key":"py_随看_APP","name":"雷蒙影视 | 🧿随看(GET)","type":3,"api":"./PY/app/getapp.py","searchable":1,"quickSearch":1,"filterable":1,"ext":{"host":"https://suikan.tpmbt.cn","api":"/api.php/getappapi","datakey":"pHQsm6wjYaCuSPEz","dataiv":"pHQsm6wjYaCuSPEz"}},
+{"key":"py_雨滴_APP","name":"雷蒙影视 | 🧿雨滴(GET)","type":3,"api":"./PY/app/getapp.py","searchable":1,"quickSearch":1,"filterable":1,"ext":{"host":"https://appto2-1316376600.cos.ap-beijing.myqcloud.com/gap.txt","api":"/api.php/getappapi","datakey":"685bf108bc47b67d","dataiv":"685bf108bc47b67d"}},
 {"key":"py_白鸽_APP","name":"雷蒙影视 | 🧿白鸽(GET)","type":3,"api":"./PY/app/getapp.py","searchable":1,"quickSearch":1,"filterable":1,"ext":{"host":"https://cy.baige.asia","api":"/api.php/getappapi","datakey":"599D0FE5178642FD","dataiv":"599D0FE5178642FD"}},
 {"key":"py_奇奇_APP","name":"雷蒙影视 | 🧿奇奇(GET)","type":3,"api":"./PY/app/getapp.py","searchable":1,"quickSearch":1,"filterable":1,"ext":{"host":"http://103.236.61.192:8006","api":"/api.php/getappapi","datakey":"123456789abcdefg","dataiv":"123456789abcdefg"}},
 {"key":"py_剧猫_APP","name":"雷蒙影视 | 🧿剧猫(GET)","type":3,"api":"./PY/app/getapp.py","searchable":1,"quickSearch":1,"filterable":1,"ext":{"host":"https://zjm-1302383509.cos.ap-guangzhou.myqcloud.com/zjm.txt","api":"/api.php/getappapi","datakey":"zjmznbl2026zcxgb","dataiv":"zjmznbl2026zcxgb"}},
