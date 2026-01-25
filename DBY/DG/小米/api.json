@@ -6,7 +6,7 @@
     "sites": [
         {
             "key": "豆豆",
-            "name": "🌈热播┃项目链接>：https://link3.cc/lovemm",
+            "name": "🌈热播┃网盘线路晚高峰不卡！项目链接>：https://link3.cc/lovemm",
             "type": 3,
             "quickSearch": 0,
             "filterable": 0,
@@ -121,6 +121,15 @@
             "ext": "vxw35/hHSj07Q+maxQzOVMq1rjRCOTXpUCx8iKu5jIg="
         },
         {
+            "key": "麻雀",
+            "name": "🐦麻雀┃1080P",
+            "type": 3,
+            "quickSearch": 1,
+            "searchable": 1,
+            "api": "./api/%E9%BA%BB%E9%9B%80%E8%A7%86%E9%A2%91.js",
+            "ext": ""
+        },
+        {
             "key": "csp_Music",
             "name": "🎵MUSIC┃听歌",
             "type": 3,
@@ -128,6 +137,13 @@
             "quickSearch": 0,
             "searchable": 0,
             "ext": ""
+        },
+        {
+            "key": "csp_Living",
+            "name": "🎮聚合┃直播",
+            "type": 3,
+            "api": "csp_Living",
+            "ext": "https://lemonlive-api-1.deno.dev"
         },
         {
             "key": "88看球",
@@ -166,15 +182,8 @@
             "changeable": 1,
             "api": "./api/fox.js",
             "ext": {
-                "host": "https://cms99api.ystva.com"
+                "host": "http://host1.sopython.top/host.json"
             }
-        },
-        {
-            "key": "聚搜2",
-            "name": "🚗JUSOU┃1080P",
-            "type": 3,
-            "api": "./api/AppToV5.py",
-            "ext": "http://118.89.203.120:8365/"
         },
         {
             "key": "巧技2",
@@ -188,38 +197,8 @@
             "ext": "7lj763gg402i7942412h849jg1558j9jl8g19213il86316k465719lik158491h179312h4934183ig2l05g9"
         },
         {
-            "key": "爆炸",
-            "name": "🎴爆炸┃1080P",
-            "type": 3,
-            "api": "csp_AppGetV2",
-            "changeable": "1",
-            "quickSearch": 0,
-            "filterable": 1,
-            "ext": "pghUv+IPbIqGFEhny2nIStK3kvYuQF1lj98M0YXLH7Vmu8vVscTp5N3ez4yblkrSfdCHlm4BW9GfqxpmOugdHzmaIMUcG6iFE2QkGiogg/EkrBoFyqPlXfgqCnwvnkLTwIm6HlAJq81hOBdm8KYMAenzS1FXuj3q8/Rbai4OcSMAWvA2Wl8uB576gCLKVN0lFUFcvAYefFSkfhF9f0iyDuG/LBv87IIBNwyVB/MgWEuUwwoBhSfvjS09Mc9Ic7G4yBz6TguFIQ5Xqa2xQBGjFYb4nDoygkIbt3a7bQGmktJxEHdOhhm8nYvhDe9+/8HB7EJgHSlT5hnLoCgqcFHLqn+oof8StNPQo8Pjjik3L4VEfTfCYWaN7ZFWASzTkPIr"
-        },
-        {
-            "key": "橘子",
-            "name": "🎴JUZI┃1080P",
-            "type": 3,
-            "api": "csp_AppGetV2",
-            "changeable": "1",
-            "quickSearch": 0,
-            "filterable": 1,
-            "ext": "FNc7O3Sq/hxz7uCzbccPTwmKS9QhqbhDC5J/tBK99TWfK0aEwzyajhrUANmtu0o/w36kBG8LM77XaSazDF+/gYPfNaL4qTRYwqUKxL4cr84pssT9H168H7YT0HD1jUpcBYXSFfirex66s9O56hHTJCavdCBPyAY+K1jwYeoEEhGWSCLhW+JJBxU7rItkKh2VHMg4vh/A7M+5ydA1fIuNP8T5JR3+475o6yUWkUH7nv/8uqjmZKhq70mQZTaMPiVaBqG+SL9NKYo5Yk4vpsUBErE2uzducc78nK0PT5ShRhLv6POBMNNZZN+/O0MFX+83BqCWsbHMNipM5zOIja/xr2x14WPH7BDlUqkw9w105US6oRwZ8jtdS0cvn5u4BT9W14rSUBAMy36xrjYR3f1OUkmlIvz6sC8OAagD/CRSwFYrh9zbMvw5V2ntYK+wDdiIq6HTkXG/86MN6lYEHkEAC4sYoxBpS5KaPlDFoOo5ED4="
-        },
-        {
-            "key": "爱营",
-            "name": "🎴AIYIN┃1080P",
-            "type": 3,
-            "api": "csp_AppGetV2",
-            "changeable": "1",
-            "quickSearch": 0,
-            "filterable": 1,
-            "ext": "N/01JeZBCBEQ0wOXNuAI/kwsk5p8MqEDFtLQfMnVixAS3aeDEPdCV317OImxNn6T3Hb5VmwFLOhgFAQJ+is4HZ3ndDCtqOfPVULszPg13PiW+RHbzH5TtSdAiFfw0D1dLa7TDpTcFxuXv5MJI8925dg51pBjkSqNZt8Jz0nbRDK8eQSoCbsw2I93ke+olS9cVWkurB8mwxms5nD8AqSV4eHdYOwwU2q4ln6jV8KEyhnOHxJEjNLT8hk0SFdgLqRwqbqyl6kSqmTlPX681FYZnBN19r49ojprcBeFmLUB3Rn0LrpWzz0zIeycV8N00oXiCh5kd2caQMyUPPWdyfQbKwV6V+6dQAKtSNoTpxRNGqTimifZEJFGizQMko6AQpQpW0FHr7B3gLmmiknNMWJe/gcG7lhWSAiIGzxVnzBhCmSlOKB3sq/tAQSBrPNWKpSNFx5prQHKpStELIHAnqdNUS31u0xrGq9ejUdadgR9pxO6QcCHk0Ln0tnUA69uiJ9q1udCFx8+5i+c320rpMKGnA=="
-        },
-        {
             "key": "QD4K",
-            "name": "🐷猪猪┃影视",
+            "name": "🐷猪猪┃1080P",
             "type": 3,
             "searchable": 1,
             "quickSearch": 0,
@@ -232,6 +211,16 @@
             }
         },
         {
+            "key": "爱营",
+            "name": "🎴爱影┃1080P",
+            "type": 3,
+            "api": "csp_AppGetV2",
+            "changeable": "1",
+            "quickSearch": 0,
+            "filterable": 1,
+            "ext": "pghUv+IPbIqGFEhny2nISuI5KzOEA1E0lc1jMsyog/OYwSADcPIna2eOlbOHVLkxfaciWdUITQtbDmt+qom9EMJRiVaiwwN4fq/9mc2DAAgugdkhTXND+52hgm3ggj65qar4TjeNrCTAD/U6Er0wTLydN68QCGnUP+Az4vpxMIKNJutdzRf+Z5rYQtKX8IglZ92N7G1shuFGXBEngnUmpPhCqPzJHH3gm+Q/sNjl2Camb0qGi8XDNhl4cGORH0dvvpkHLhEzZ+1+/9LwxcTPrLUUJLtYVjCfcGT/jJT24JXrJfVWm+WngZXr8IjU/Apk0ZoHUAmte8/dLlplNyNafu3Tb3FgGkrRS0eVyWUB3d8="
+        },
+        {
             "key": "顾我",
             "name": "🎴顾我┃1080P",
             "type": 3,
@@ -239,7 +228,7 @@
             "changeable": "1",
             "quickSearch": 0,
             "filterable": 1,
-            "ext": "FNc7O3Sq/hxz7uCzbccPTwmKS9QhqbhDC5J/tBK99TXBAOG5IeeHo7xSXryC0vBoO5B1l2XmjJKdkeCZu5v1UxCZcIXe/1cmcBYcHAk746JE1FosonleIPqUFKByjhLwUU1doZS06jAVhSjz7X90y5GWmFqHmqD7ArxYzUSMQxyKerhNQ2ZWaJ2ka4jFMRPVVDQrBge5CgBGsw/HTb/+Q12qdcSTymLUN/cfwoUZ4uqBcSPbxSIrB4znIU2PcCtnX14vLtsWp1u/cbGV+kP8486YY8kGEs2qq+T34UaXBZf9Kk1t0Qt6yrj57yptwkeJXa2gK176ebs/D71tmX2ErBjije7pqwpRtEmeAmBWxohh9kLrGdh97ODRSzyNYE93Ai7nbGoskd/2r1Uu5NLCEqCIBBhH1qI6Jl/jWIVcngIDBm5KoTPs1ZxNWEqnOyP8nf8FuHZkRp/o26HL5LXb17UOkCmecqDKg3vjcnBKPNg="
+            "ext": "N/01JeZBCBEQ0wOXNuAI/kwsk5p8MqEDFtLQfMnVixDNodW6h3yknJ0O47HN+ySzcqHSPQtTeHgAvnMVMolGPqTNRfEJ/8Ig5H0hTsHFjNGXL5OVpWSZap4nLlzZ9pC6ySFwrNbAc+iqlFCc6z5KL6GjhpXci7bkuo8YCmxG8LkVMThjtRobWKZ1e3OUf8iC59/IyFSC+uQsfZ1rrWFNaZQt+eFNaeVHeMjfA7SOcNV+pkm+lX4Gat7MacLYC9LljY+gazPVjkD5hfN4kOg2pDcdLcQRWnylKs4RrxKVvq1qtoJicNIMxej65Xg+Dr1utKuFqyKRxre38NOR3dI+nG+WBoDgBsil76zpdeFboyEih33jRIbJ0QXY11r7XTDsVV2LaQb+dJaJbY1LEl7rEF/BaE+Ynj1X+sVapCX5Bi2IG68t3waAsQz5dq/1NzjTRQTg9OtFW05LL1UeJTmSeoepyNfixFoonivaJleB4G8="
         },
         {
             "key": "仓鼠",
@@ -273,17 +262,27 @@
         },
         {
             "key": "JINPAI",
-            "name": "🍥JINPIA┃1080P",
+            "name": "🍥金牌┃1080P",
             "type": 3,
             "api": "csp_AppGetV2",
             "changeable": "1",
             "quickSearch": 0,
             "filterable": 1,
-            "ext": "N/01JeZBCBEQ0wOXNuAI/kwsk5p8MqEDFtLQfMnVixDB3xui1lDymx4fnoCgxm59NbdMM2FDEd1LoNOCZvedKAplW6Go0JtGfzXnn65Pg1kPIthOoYoQWgY/lKhQKzzcLQKb1ezm1qhhKR/lEhfm+EbojsfeaAOeOaSCVPPzSkVw2DmHMhYv+yWi9ExOHyfuXX1csfF6G/UWPw12lFNeElpZMAUAQG2LEcbRadEvVmNm3YDM07Dn4F8Fcvsnb08MRb3GO2sEZSdjqf85kk1tVNb5zdfho1F01S/Cvzp4Lz+TE9ttJdTPredSWbGdEqE6nSkfEYZvFEnCD8bleLRdOPik/WqX5gPv+gSRakGrrGx7FwM3Ase0Bd8sy6ZfJqfs8IllB1ckfC0POuFEmprDW4ERNmIFJHsZcS128w9xhNUrtuPnocdErRw7+shj+W3Hc4pGqZpprTTxaXp9zA+HcGj/qeNIOXt32yoDOnpy9SOHNSvD4Joue4EcTCkqnJoC"
+            "ext": "N/01JeZBCBEQ0wOXNuAI/kwsk5p8MqEDFtLQfMnVixDB3xui1lDymx4fnoCgxm59NbdMM2FDEd1LoNOCZvedKAplW6Go0JtGfzXnn65Pg1kPIthOoYoQWgY/lKhQKzzcLQKb1ezm1qhhKR/lEhfm+EbojsfeaAOeOaSCVPPzSkVw2DmHMhYv+yWi9ExOHyfuXX1csfF6G/UWPw12lFNeElpZMAUAQG2LEcbRadEvVmNm3YDM07Dn4F8Fcvsnb08MRb3GO2sEZSdjqf85kk1tVNb5zdfho1F01S/Cvzp4Lz84cQdryYTNnZCggLd9vL5TzLkGb3USPOKaq2v4jzsIlGKXcyRYbIDf/vcihcS2/VvRXNBBU782kwniaIiq+4rEN3u8hlLic89wNWeBa60vQgYvjsfM7t1zsospH+7CcEEliFOlYdCrMcW2NGR9Gjj/"
+        },
+        {
+            "key": "橘子",
+            "name": "🍊橘子┃1080P",
+            "type": 3,
+            "api": "csp_AppGetV2",
+            "changeable": "1",
+            "quickSearch": 0,
+            "filterable": 1,
+            "ext": "pghUv+IPbIqGFEhny2nISk+xygMDLIUeoyKFU8yxKlNVrgrcirdV3YINpNZnwDWWlJoI1+YwCT971kI1lcLM0tzIyHBz96Ly2iz/tFqjAerxg6klaKzTwi6jg5OOo6Mwvnbg/KZWUzU+J7aDaHc72Nucd9aASNNVEfOZ2/3HXtYs3eu8yJM7+mLSvr5mRz9+k4L/WI59yc+PqdX8OqL8HylGowei2F3008X+DCyhFqONooDf9IEFgJXOExW3L3Wb3a0nnnfyr0HqRDiEaoEW2qcVMVHR0CvPhnSp/eEmlvQQ94YDUCH/YVORQoZMD5LteQKiOzSjZbmRbCWxP3hc1A=="
         },
         {
             "key": "荐片",
-            "name": "🧲JIANPIAN┃磁力",
+            "name": "🧲荐片┃磁力",
             "quickSearch": 0,
             "changeable": "0",
             "searchable": 1,
@@ -296,14 +295,21 @@
             "ext": "https://ev2089.zxbwv.com"
         },
         {
-            "key": "csp_SaoHuo",
-            "name": "🔥HUOHUO┃影视",
+            "key": "csp_duanju",
+            "name": "🔥短剧┃影视",
             "type": 3,
-            "api": "csp_SaoHuo"
+            "api": "csp_DuanJu"
+        },
+        {
+            "key": "csp_Wwys",
+            "name": "🔥农民┃影视",
+            "type": 3,
+            "api": "csp_Wwys",
+            "ext": "https://vip.wwgz.cn:5200"
         },
         {
             "key": "csp_LiteApple",
-            "name": "🍎APPLE┃影视💯",
+            "name": "🍎苹果┃影视💯",
             "type": 3,
             "searchable": 1,
             "quickSearch": 0,
@@ -311,7 +317,7 @@
         },
         {
             "key": "csp_Gz360",
-            "name": "🍉GUAZI┃影视",
+            "name": "🍉瓜子┃影视",
             "type": 3,
             "searchable": 1,
             "quickSearch": 0,
@@ -319,7 +325,7 @@
         },
         {
             "key": "csp_Jpys",
-            "name": "🥇JINPAI┃影视",
+            "name": "🥇金牌┃影视",
             "type": 3,
             "searchable": 1,
             "quickSearch": 0,
@@ -327,21 +333,11 @@
         },
         {
             "key": "csp_MiSou",
-            "name": "🔍MISOU┃盘搜",
+            "name": "🔍米搜┃盘搜",
             "type": 3,
             "searchable": 1,
             "quickSearch": 0,
             "api": "csp_MiSou"
-        },
-        {
-            "key": "剧和短剧",
-            "name": "🪗聚合┃短剧",
-            "type": 3,
-            "searchable": 1,
-            "quickSearch": 1,
-            "filterable": 1,
-            "changeable": 1,
-            "api": "./api/%E8%81%9A%E5%90%88%E7%9F%AD%E5%89%A7.js"
         },
         {
             "key": "csp_TingBook",
