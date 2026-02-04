@@ -385,20 +385,6 @@
             "timeout": 10
         },
         {
-            "key": "鲸鱼",
-            "name": "🐳鲸鱼┃App",
-            "type": 3,
-            "api": "csp_AweSomeGuard",
-            "searchable": 1,
-            "quickSearch": 1,
-            "changeable": 0,
-            "filterable": 1,
-            "ext": {
-                "sp": "JingYu"
-            },
-            "timeout": 10
-        },
-        {
             "key": "小猪",
             "name": "🐖小猪┃App",
             "type": 3,
@@ -427,8 +413,8 @@
             "timeout": 10
         },
         {
-            "key": "仓鼠",
-            "name": "🐹仓鼠┃App",
+            "key": "芬奇",
+            "name": "🐹芬奇┃App",
             "type": 3,
             "api": "csp_AweSomeGuard",
             "searchable": 1,
@@ -436,7 +422,7 @@
             "changeable": 0,
             "filterable": 1,
             "ext": {
-                "sp": "CangShu"
+                "sp": "FenQi"
             },
             "timeout": 10
         },
@@ -455,6 +441,34 @@
             "timeout": 10
         },
         {
+            "key": "小白",
+            "name": "🍼小白┃App",
+            "type": 3,
+            "api": "csp_AweSomeGuard",
+            "searchable": 1,
+            "quickSearch": 1,
+            "changeable": 0,
+            "filterable": 1,
+            "ext": {
+                "sp": "XiaoBai"
+            },
+            "timeout": 10
+        },
+        {
+            "key": "汤圆",
+            "name": "🍚汤圆┃App",
+            "type": 3,
+            "api": "csp_AweSomeGuard",
+            "searchable": 1,
+            "quickSearch": 1,
+            "changeable": 0,
+            "filterable": 1,
+            "ext": {
+                "sp": "TangYuan"
+            },
+            "timeout": 10
+        },
+        {
             "key": "木瓜",
             "name": "🥑木瓜┃App",
             "type": 3,
@@ -466,6 +480,21 @@
             "ext": {
                 "sp": "AppFox",
                 "siteUrl": "http://www.yezitv.top"
+            },
+            "timeout": 10
+        },
+        {
+            "key": "紫金",
+            "name": "🍇紫金┃App",
+            "type": 3,
+            "api": "csp_AweSomeGuard",
+            "searchable": 1,
+            "quickSearch": 1,
+            "changeable": 0,
+            "filterable": 1,
+            "ext": {
+                "sp": "AppFox",
+                "siteUrl": "https://www.zjcvod.com"
             },
             "timeout": 10
         },
@@ -733,20 +762,6 @@
             "timeout": 10
         },
         {
-            "key": "yhdm",
-            "name": "🌸樱花┃动漫",
-            "type": 3,
-            "api": "csp_AweSomeGuard",
-            "searchable": 1,
-            "quickSearch": 1,
-            "changeable": 0,
-            "filterable": 1,
-            "ext": {
-                "sp": "YHDM"
-            },
-            "timeout": 15
-        },
-        {
             "key": "动漫巴士",
             "name": "🚌巴士┃动漫",
             "type": 3,
@@ -852,6 +867,32 @@
             },
             "ext": {
                 "sp": "Kanqiu"
+            },
+            "timeout": 10
+        },
+        {
+            "key": "爱听音乐",
+            "name": "🎧爱听┃音乐",
+            "type": 3,
+            "api": "csp_AweSomeGuard",
+            "searchable": 0,
+            "quickSearch": 0,
+            "changeable": 0,
+            "ext": {
+                "sp": "AiMusic"
+            },
+            "timeout": 10
+        },
+        {
+            "key": "酷狗音乐",
+            "name": "🐕酷狗┃音乐",
+            "type": 3,
+            "api": "csp_AweSomeGuard",
+            "searchable": 0,
+            "quickSearch": 0,
+            "changeable": 0,
+            "ext": {
+                "sp": "KuGou"
             },
             "timeout": 10
         },
@@ -1312,6 +1353,11 @@
             "url": "http://127.0.0.1:9978/proxy?do=live&url=https://raw.githubusercontent.com/develop202/migu_video/refs/heads/main/interface.txt"
         },
         {
+            "name": "MIGU",
+            "type": 0,
+            "url": "http://127.0.0.1:9978/proxy?do=live&url=https://ds65.tv1288.xyz"
+        },
+        {
             "name": "冰茶",
             "type": 0,
             "url": "http://127.0.0.1:9978/proxy?do=live&url=https%3A%2F%2Fbc.188766.xyz%2F%3Fip%3D%26mishitong%3Dtrue%26mima%3Dbingcha1130%26json%3Dtrue",
@@ -1325,7 +1371,7 @@
         {
             "name": "一起看",
             "type": 3,
-            "api": "csp_HuyaGuard",
+            "api": "csp_AweSomeGuard",
             "url": "yqk"
         },
         {
