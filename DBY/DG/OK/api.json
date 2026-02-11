@@ -7,7 +7,7 @@
     "sites": [
         {
             "key": "豆瓣",
-            "name": "🤓公众号┃OK杰克 (打不开请长按首页或清空缓存)",
+            "name": "🤓公众号┃OK杰克 (关注不迷路)",
             "type": 3,
             "api": "csp_AweSomeGuard",
             "searchable": 0,
@@ -413,20 +413,6 @@
             "timeout": 10
         },
         {
-            "key": "芬奇",
-            "name": "🐹芬奇┃App",
-            "type": 3,
-            "api": "csp_AweSomeGuard",
-            "searchable": 1,
-            "quickSearch": 1,
-            "changeable": 0,
-            "filterable": 1,
-            "ext": {
-                "sp": "FenQi"
-            },
-            "timeout": 10
-        },
-        {
             "key": "奇奇",
             "name": "🐵奇奇┃App",
             "type": 3,
@@ -437,49 +423,6 @@
             "filterable": 1,
             "ext": {
                 "sp": "QiQi"
-            },
-            "timeout": 10
-        },
-        {
-            "key": "小白",
-            "name": "🍼小白┃App",
-            "type": 3,
-            "api": "csp_AweSomeGuard",
-            "searchable": 1,
-            "quickSearch": 1,
-            "changeable": 0,
-            "filterable": 1,
-            "ext": {
-                "sp": "XiaoBai"
-            },
-            "timeout": 10
-        },
-        {
-            "key": "汤圆",
-            "name": "🍚汤圆┃App",
-            "type": 3,
-            "api": "csp_AweSomeGuard",
-            "searchable": 1,
-            "quickSearch": 1,
-            "changeable": 0,
-            "filterable": 1,
-            "ext": {
-                "sp": "TangYuan"
-            },
-            "timeout": 10
-        },
-        {
-            "key": "木瓜",
-            "name": "🥑木瓜┃App",
-            "type": 3,
-            "api": "csp_AweSomeGuard",
-            "searchable": 1,
-            "quickSearch": 1,
-            "changeable": 0,
-            "filterable": 1,
-            "ext": {
-                "sp": "AppFox",
-                "siteUrl": "http://www.yezitv.top"
             },
             "timeout": 10
         },
@@ -495,6 +438,20 @@
             "ext": {
                 "sp": "AppFox",
                 "siteUrl": "https://www.zjcvod.com"
+            },
+            "timeout": 10
+        },
+        {
+            "key": "独播",
+            "name": "👠独播┃直连",
+            "type": 3,
+            "api": "csp_AweSomeGuard",
+            "searchable": 1,
+            "quickSearch": 1,
+            "changeable": 0,
+            "filterable": 1,
+            "ext": {
+                "sp": "Duboku"
             },
             "timeout": 10
         },
@@ -706,20 +663,6 @@
             "timeout": 10
         },
         {
-            "key": "锦鲤短剧",
-            "name": "🐟锦鲤┃短剧",
-            "type": 3,
-            "api": "csp_AweSomeGuard",
-            "searchable": 1,
-            "quickSearch": 1,
-            "changeable": 0,
-            "filterable": 1,
-            "ext": {
-                "sp": "Jinli"
-            },
-            "timeout": 10
-        },
-        {
             "key": "盒马短剧",
             "name": "🦓盒马┃短剧",
             "type": 3,
@@ -787,20 +730,6 @@
                 "sp": "Xb6v"
             },
             "timeout": 20
-        },
-        {
-            "key": "聚合直播",
-            "name": "📽️聚合┃直播",
-            "type": 3,
-            "api": "csp_AweSomeGuard",
-            "searchable": 0,
-            "quickSearch": 0,
-            "changeable": 0,
-            "filterable": 1,
-            "ext": {
-                "sp": "Living"
-            },
-            "timeout": 10
         },
         {
             "key": "快手直播",
@@ -884,11 +813,24 @@
             "timeout": 10
         },
         {
+            "key": "易听音乐",
+            "name": "🎧易听┃音乐",
+            "type": 3,
+            "api": "csp_AweSomeGuard",
+            "searchable": 0,
+            "quickSearch": 0,
+            "changeable": 0,
+            "ext": {
+                "sp": "ShiJiMusic"
+            },
+            "timeout": 10
+        },
+        {
             "key": "酷狗音乐",
             "name": "🐕酷狗┃音乐",
             "type": 3,
             "api": "csp_AweSomeGuard",
-            "searchable": 0,
+            "searchable": 1,
             "quickSearch": 0,
             "changeable": 0,
             "ext": {
